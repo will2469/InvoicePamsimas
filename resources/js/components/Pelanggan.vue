@@ -30,8 +30,8 @@
                                 <tr v-for="pelanggan in daftarPelanggan" :key="pelanggan.id">
                                     <td>{{pelanggan.id}}</td>
                                     <td>{{pelanggan.nama}}</td>
+                                    <td>{{pelanggan.alamat}}</td>
                                     <td>{{pelanggan.golongan}}</td>
-                                    <td><span class="tag tag-success">Approved</span></td>
                                     <td>
                                         <a href="#" class="btn bg-warning btn-flat btn-sm" title="Ubah">
                                             <i class="fa fa-user-edit icon-white"></i>
