@@ -14,7 +14,7 @@ class CreateDaftarPelangganTable extends Migration
     public function up()
     {
         Schema::create('daftarPelanggan', function (Blueprint $table) {
-            $table->id()->unique();
+            $table->id();
             $table->string('nama');
             $table->string('alamat');
             $table->string('golongan');

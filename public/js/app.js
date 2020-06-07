@@ -2048,6 +2048,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2057,6 +2059,11 @@ __webpack_require__.r(__webpack_exports__);
         golongan: ''
       })
     };
+  },
+  methods: {
+    createPelanggan: function createPelanggan() {
+      this.form.post('api/daftar-pelanggan');
+    }
   },
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -38830,143 +38837,160 @@ var render = function() {
           _c("div", { staticClass: "modal-content" }, [
             _vm._m(1),
             _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [
-              _c(
-                "div",
-                { staticClass: "form-group" },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.nama,
-                        expression: "form.nama"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    class: { "is-invalid": _vm.form.errors.has("nama") },
-                    attrs: {
-                      type: "text",
-                      name: "nama",
-                      placeholder: "Masukkan Nama Pelanggan..."
-                    },
-                    domProps: { value: _vm.form.nama },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "nama", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("has-error", { attrs: { form: _vm.form, field: "nama" } })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "form-group" },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.alamat,
-                        expression: "form.alamat"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    class: { "is-invalid": _vm.form.errors.has("alamat") },
-                    attrs: {
-                      type: "text",
-                      name: "alamat",
-                      placeholder: "Masukkan Alamat Pelanggan..."
-                    },
-                    domProps: { value: _vm.form.alamat },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.form, "alamat", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("has-error", {
-                    attrs: { form: _vm.form, field: "alamat" }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "form-group" },
-                [
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.createPelanggan($event)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "modal-body" }, [
                   _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.golongan,
-                          expression: "form.golongan"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      class: { "is-invalid": _vm.form.errors.has("alamat") },
-                      attrs: { type: "text", name: "golongan" },
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.form,
-                            "golongan",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        }
-                      }
-                    },
+                    "div",
+                    { staticClass: "form-group" },
                     [
-                      _c("option", { attrs: { value: "" } }, [
-                        _vm._v("Pilih Golongan Pelanggan")
-                      ]),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.nama,
+                            expression: "form.nama"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.form.errors.has("nama") },
+                        attrs: {
+                          type: "text",
+                          name: "nama",
+                          placeholder: "Masukkan Nama Pelanggan..."
+                        },
+                        domProps: { value: _vm.form.nama },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "nama", $event.target.value)
+                          }
+                        }
+                      }),
                       _vm._v(" "),
-                      _c("option", { attrs: { value: "Rumah Tangga" } }, [
-                        _vm._v("Rumah Tangga")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "Sosial" } }, [
-                        _vm._v("Sosial")
-                      ])
-                    ]
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "nama" }
+                      })
+                    ],
+                    1
                   ),
                   _vm._v(" "),
-                  _c("has-error", {
-                    attrs: { form: _vm.form, field: "golongan" }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _vm._m(2)
+                  _c(
+                    "div",
+                    { staticClass: "form-group" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.alamat,
+                            expression: "form.alamat"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.form.errors.has("alamat") },
+                        attrs: {
+                          type: "text",
+                          name: "alamat",
+                          placeholder: "Masukkan Alamat Pelanggan..."
+                        },
+                        domProps: { value: _vm.form.alamat },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "alamat", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "alamat" }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group" },
+                    [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.golongan,
+                              expression: "form.golongan"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("alamat")
+                          },
+                          attrs: { type: "text", name: "golongan" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "golongan",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Pilih Golongan Pelanggan")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Rumah Tangga" } }, [
+                            _vm._v("Rumah Tangga")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "Sosial" } }, [
+                            _vm._v("Sosial")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "golongan" }
+                      })
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(2)
+              ]
+            )
           ])
         ])
       ]
@@ -39105,7 +39129,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
         [_vm._v("Tambahkan")]
       )
     ])
