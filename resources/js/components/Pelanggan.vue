@@ -61,7 +61,29 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <div class="form-group">
+                            <input v-model="form.nama" type="text" class="form-control" name="nama"
+                                placeholder="Masukkan Nama Pelanggan..."
+                                :class="{ 'is-invalid': form.errors.has('nama') }" />
+                            <has-error :form="form" field="nama"></has-error>
+                        </div>
+
+                        <div class="form-group">
+                            <input v-model="form.alamat" type="text" class="form-control" name="alamat"
+                                placeholder="Masukkan Alamat Pelanggan..."
+                                :class="{ 'is-invalid': form.errors.has('alamat') }" />
+                            <has-error :form="form" field="alamat"></has-error>
+                        </div>
+
+                        <div class="form-group">
+                            <select v-model="form.golongan" type="text" class="form-control" name="golongan"
+                                :class="{ 'is-invalid': form.errors.has('alamat') }">
+                                <option value="">Pilih Golongan Pelanggan</option>
+                                <option value="Rumah Tangga">Rumah Tangga</option>
+                                <option value="Sosial">Sosial</option>
+                                </select>
+                            <has-error :form="form" field="golongan"></has-error>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -75,6 +97,15 @@
 
 <script>
     export default {
+        data() {
+            return {
+                form: new Form({
+                    nama: '',
+                    alamat: '',
+                    golongan: ''
+                })
+            }
+        },
         mounted() {
             console.log('Component mounted.')
         }
