@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
                             <button type="submit" class="btn btn-primary">Tambahkan</button>
                         </div>
                     </form>
@@ -101,7 +101,7 @@
     export default {
         data() {
             return {
-                daftarPelanggan :{},
+                daftarPelanggan: {},
                 form: new Form({
                     nama: '',
                     alamat: '',
@@ -111,13 +111,23 @@
         },
         methods: {
             // untuk menampilkan Daftar Pelanggan
-            loadDaftarPelanggan(){
-                axios.get("api/daftar-pelanggan").then(({ data }) => (this.daftarPelanggan = data.data));
+            loadDaftarPelanggan() {
+                axios.get("api/daftar-pelanggan").then(({
+                    data
+                }) => (this.daftarPelanggan = data.data));
             },
 
             // untuk menambahkan pelanggan baru
             createPelanggan() {
+            this.$Progress.start();
                 this.form.post('api/daftar-pelanggan');
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Pelanggan Baru Berhasil ditambahkan!'
+            });
+
+            this.$Progress.finish();
             }
         },
         created() {
