@@ -96,7 +96,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </router-link>
           </li>
           <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file-invoice"></i>
               <p>
                 Billing
@@ -105,7 +105,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <router-link to="/pembacaan-meteran" class="nav-link active">
+                <router-link to="/pembacaan-meteran" class="nav-link">
                   <i class="fas fa-tachometer-alt nav-icon"></i>
                   <p>Pembacaan Meteran</p>
                 </router-link>
