@@ -9,13 +9,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>AdminLTE 3 | Starter</title>
+  <title>PAMSIMAS | e-Billing</title>
 
   <link rel="stylesheet" href="css/app.css">
   </head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
+<body class="hold-transition sidebar-mini" >
+<div class="wrapper" id="app">
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -37,6 +40,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </div>
     </form>
 
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="#" role="button"><i
+            class="fas fa-sign-out-alt"></i></a>
+      </li>
+    </ul>
+
   </nav>
   <!-- /.navbar -->
 
@@ -57,7 +68,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <img src="./img/person.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">
+          {{ Auth::user()->name }}
+          </a>
         </div>
       </div>
 
@@ -67,20 +80,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <router-link to="/dashboard" class="nav-link">
               <i class="nav-icon fab fa-dashcube"></i>
               <p>
                 Dashboard
               </p>
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <router-link to="/pelanggan" class="nav-link">
               <i class="nav-icon fas fa-hand-holding-water"></i>
               <p>
                 Pelanggan
               </p>
-            </a>
+            </router-link>
           </li>
           <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
@@ -92,32 +105,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <router-link to="/pembacaan-meteran" class="nav-link active">
                   <i class="fas fa-tachometer-alt nav-icon"></i>
                   <p>Pembacaan Meteran</p>
-                </a>
+                </router-link>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <router-link to="/tagihan" class="nav-link">
                   <i class="fas fa-file-invoice-dollar nav-icon"></i>
                   <p>Tagihan</p>
-                </a>
+                </router-link>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <router-link to="/pembayaran" class="nav-link">
                   <i class="fas fa-hand-holding-usd nav-icon"></i>
                   <p>Pembayaran</p>
-                </a>
+                </router-link>
               </li>
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <router-link to="/pengaturan" class="nav-link">
               <i class="nav-icon fas fa-sliders-h"></i>
               <p>
                 Pengaturan
               </p>
-            </a>
+            </router-link>
           </li>
         </ul>
       </nav>
@@ -127,101 +140,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Starter Page</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
+  <div class="content-wrapper" >
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
-                </p>
-
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div>
-
-            <div class="card card-primary card-outline">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
-                </p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div><!-- /.card -->
-          </div>
-          <!-- /.col-md-6 -->
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="m-0">Featured</h5>
-              </div>
-              <div class="card-body">
-                <h6 class="card-title">Special title treatment</h6>
-
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h5 class="m-0">Featured</h5>
-              </div>
-              <div class="card-body">
-                <h6 class="card-title">Special title treatment</h6>
-
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-md-6 -->
-        </div>
-        <!-- /.row -->
+      <router-view></router-view>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-    <div class="p-3">
-      <h5>Title</h5>
-      <p>Sidebar content</p>
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
   <footer class="main-footer">
