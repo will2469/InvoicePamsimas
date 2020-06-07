@@ -27,10 +27,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>183</td>
-                                    <td>John Doe</td>
-                                    <td>11-7-2014</td>
+                                <tr v-for="pelanggan in daftarPelanggan" :key="pelanggan.id">
+                                    <td>{{pelanggan.id}}</td>
+                                    <td>{{pelanggan.nama}}</td>
+                                    <td>{{pelanggan.golongan}}</td>
                                     <td><span class="tag tag-success">Approved</span></td>
                                     <td>
                                         <a href="#" class="btn bg-warning btn-flat btn-sm" title="Ubah">
@@ -101,6 +101,7 @@
     export default {
         data() {
             return {
+                daftarPelanggan :{},
                 form: new Form({
                     nama: '',
                     alamat: '',
@@ -109,12 +110,18 @@
             }
         },
         methods: {
+            // untuk menampilkan Daftar Pelanggan
+            loadDaftarPelanggan(){
+                axios.get("api/daftar-pelanggan").then(({ data }) => (this.daftarPelanggan = data.data));
+            },
+
+            // untuk menambahkan pelanggan baru
             createPelanggan() {
                 this.form.post('api/daftar-pelanggan');
             }
         },
-        mounted() {
-            console.log('Component mounted.')
+        created() {
+            this.loadDaftarPelanggan();
         }
     }
 </script>

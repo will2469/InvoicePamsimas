@@ -15,7 +15,7 @@ class DaftarPelangganController extends Controller
      */
     public function index()
     {
-        //
+        return DaftarPelanggan::latest()->paginate(10);
     }
 
     /**
