@@ -58292,8 +58292,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\2020\InvoicePansimas\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\2020\InvoicePansimas\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\2020\InvoicePamsimas\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\2020\InvoicePamsimas\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

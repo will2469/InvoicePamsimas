@@ -65,27 +65,34 @@ Untuk menginstall aplikasi ini silahkan ikuti langkah - langkah berikut :
     $ composer install
     ```
 
-5. Modifikasi file .env.example menjadi .env dan sesuaikan pengaturan path database ke directory file database/db.sqlite
+5. Siapkan database sqlite dengan nama db.sqlite di folder database
+6. Modifikasi file .env.example menjadi .env dan sesuaikan pengaturan path database ke directory file database/db.sqlite
 
-6. Generate APP_KEY untuk laravel dengan cara :
+7. Generate APP_KEY untuk laravel dengan cara :
 
     ```
     $ php artisan key:generate
     ```
 
-7. Kemudian Install dependencies pada packages.json dan jalan development
+8. Migrate database dengan cara :
+
+    ```
+    $ php artisan migrate
+    ```
+
+9. Kemudian Install dependencies pada packages.json dan jalan development
 
     ```
     $ npm install && npm run dev
     ```
 
-8. Jalankan laravel kedalam localhost dengan menggunakan perintah :
+10. Jalankan laravel kedalam localhost dengan menggunakan perintah :
 
     ```
     $ php artisan serve
     ```
 
-9. Setelah berhasil tekan `Ctrl` + `Click` pada local server
+11. Setelah berhasil tekan `Ctrl` + `Click` pada local server
 
     ```
     $ php artisan serve
