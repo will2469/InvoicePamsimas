@@ -19,7 +19,7 @@
                         <table class="table table-hover text-nowrap">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>No</th>
                                     <th>Nama</th>
                                     <th>Alamat</th>
                                     <th>Golongan</th>
@@ -117,21 +117,40 @@
                 }) => (this.daftarPelanggan = data.data));
             },
 
+        createPelanggan() {
             // untuk menambahkan pelanggan baru
-            createPelanggan() {
-            this.$Progress.start();
-                this.form.post('api/daftar-pelanggan');
+                this.$Progress.start();
+                
+                let url = "api/daftar-pelanggan";
+                this.form
+                    .post(url)
+                    .then(() => {
+                        $("#TambahBaruModal").modal("hide");
+                        this.$Toast.fire({
+                            icon: "success",
+                            title: "Pengguna baru telah dibuat bosku..."
+                            });
 
-            Toast.fire({
-                icon: 'success',
-                title: 'Pelanggan Baru Berhasil ditambahkan!'
-            });
+                            this.$Progress.finish();
 
-            this.$Progress.finish();
+                            Update.$emit("Updated");
+                    })
+
+                .catch(() => {
+                    this.$Progress.fail();
+                    this.$Toast.fire({
+                        icon: "warning",
+                        title: "Terdapat kesalahan saat menyimpan data bosku..."
+                        });
+                });
             }
         },
         created() {
             this.loadDaftarPelanggan();
+
+            Update.$on("Updated", () => {
+                this.loadDaftarPelanggan();
+            });
         }
     }
 </script>
