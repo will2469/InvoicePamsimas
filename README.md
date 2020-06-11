@@ -53,7 +53,7 @@ aplikasi ini dilengkapi dengan berbagai macam fitur :
 
 Untuk menginstall aplikasi ini silahkan ikuti langkah - langkah berikut :
 
-1. Clone atau download pada github repository dan extract ke folder htdoc pada xampp
+1. Clone atau download pada github repository dan extract ke folder yang diinginkan.
 
 2. Buka dengan code editor, kami menyarankan untuk menggunakan Visual Studio Code
 
@@ -65,7 +65,7 @@ Untuk menginstall aplikasi ini silahkan ikuti langkah - langkah berikut :
     $ composer install
     ```
 
-5. Modifikasi file .env.example menjadi .env dan sesuaikan pengaturan database
+5. Modifikasi file .env.example menjadi .env dan sesuaikan pengaturan path database ke directory file database/db.sqlite
 
 6. Generate APP_KEY untuk laravel dengan cara :
 
