@@ -2050,11 +2050,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      editMode: false,
       daftarPelanggan: {},
       form: new Form({
+        id: '',
         nama: '',
         alamat: '',
         golongan: ''
@@ -2062,6 +2067,17 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    addPelangganModal: function addPelangganModal() {
+      this.editMode = false;
+      this.form.reset();
+      $("#TambahBaruModal").modal("show");
+    },
+    editPelangganModal: function editPelangganModal(pelanggan) {
+      this.editMode = true;
+      this.form.reset();
+      $("#TambahBaruModal").modal("show");
+      this.form.fill(pelanggan);
+    },
     deletePelanggan: function deletePelanggan(id) {
       var _this = this;
 
@@ -2089,17 +2105,37 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    loadDaftarPelanggan: function loadDaftarPelanggan() {
+    updatePelanggan: function updatePelanggan() {
       var _this2 = this;
+
+      this.$Progress.start();
+      var url = "api/daftar-pelanggan/" + this.form.id;
+      this.form.put(url).then(function () {
+        //succes
+        $("#TambahBaruModal").modal("hide");
+        Swal.fire("Berhasil!", "Data berhasil diubah Bosku.", "success");
+
+        _this2.$Progress.finish();
+
+        Update.$emit("Updated");
+      })["catch"](function () {
+        //failed
+        _this2.$Progress.fail();
+
+        Swal.fire("Gagal!", "Data gagal diubah Bosku.", "warning");
+      });
+    },
+    loadDaftarPelanggan: function loadDaftarPelanggan() {
+      var _this3 = this;
 
       // untuk menampilkan Daftar Pelanggan
       axios.get("api/daftar-pelanggan").then(function (_ref) {
         var data = _ref.data;
-        return _this2.daftarPelanggan = data.data;
+        return _this3.daftarPelanggan = data.data;
       });
     },
     createPelanggan: function createPelanggan() {
-      var _this3 = this;
+      var _this4 = this;
 
       // untuk menambahkan pelanggan baru
       this.$Progress.start();
@@ -2107,18 +2143,18 @@ __webpack_require__.r(__webpack_exports__);
       this.form.post(url).then(function () {
         $("#TambahBaruModal").modal("hide");
 
-        _this3.$Toast.fire({
+        _this4.$Toast.fire({
           icon: "success",
           title: "Pengguna baru telah dibuat bosku..."
         });
 
-        _this3.$Progress.finish();
+        _this4.$Progress.finish();
 
         Update.$emit("Updated");
       })["catch"](function () {
-        _this3.$Progress.fail();
+        _this4.$Progress.fail();
 
-        _this3.$Toast.fire({
+        _this4.$Toast.fire({
           icon: "warning",
           title: "Terdapat kesalahan saat menyimpan data bosku..."
         });
@@ -2126,11 +2162,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.loadDaftarPelanggan();
     Update.$on("Updated", function () {
-      _this4.loadDaftarPelanggan();
+      _this5.loadDaftarPelanggan();
     });
   }
 });
@@ -42067,11 +42103,32 @@ var render = function() {
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-12" }, [
         _c("div", { staticClass: "card" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header" }, [
+            _c("h3", { staticClass: "card-title" }, [
+              _vm._v("Daftar Pelanggan")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-tools" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "button" },
+                  on: { click: _vm.addPelangganModal }
+                },
+                [
+                  _vm._v(
+                    "\n                            Tambah Baru\n                            "
+                  ),
+                  _c("i", { staticClass: "fa fa-user-edit icon-white" })
+                ]
+              )
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body table-responsive p-0" }, [
             _c("table", { staticClass: "table table-hover text-nowrap" }, [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -42086,7 +42143,19 @@ var render = function() {
                     _c("td", [_vm._v(_vm._s(pelanggan.golongan))]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._m(2, true),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn bg-warning btn-flat btn-sm",
+                          attrs: { href: "#", title: "Ubah" },
+                          on: {
+                            click: function($event) {
+                              return _vm.editPelangganModal(pelanggan)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-user-edit icon-white" })]
+                      ),
                       _vm._v(" "),
                       _c(
                         "a",
@@ -42132,7 +42201,41 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog modal-dialog-centered" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(3),
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "h4",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.editMode,
+                      expression: "editMode"
+                    }
+                  ],
+                  staticClass: "modal-title"
+                },
+                [_vm._v("Ubah Pelanggan")]
+              ),
+              _vm._v(" "),
+              _c(
+                "h4",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: !_vm.editMode,
+                      expression: "!editMode"
+                    }
+                  ],
+                  staticClass: "modal-title"
+                },
+                [_vm._v("Tambah Pelanggan Baru")]
+              ),
+              _vm._v(" "),
+              _vm._m(1)
+            ]),
             _vm._v(" "),
             _c(
               "form",
@@ -42140,7 +42243,7 @@ var render = function() {
                 on: {
                   submit: function($event) {
                     $event.preventDefault()
-                    return _vm.createPelanggan($event)
+                    _vm.editMode ? _vm.updatePelanggan() : _vm.createPelanggan()
                   }
                 }
               },
@@ -42239,7 +42342,7 @@ var render = function() {
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("alamat")
+                            "is-invalid": _vm.form.errors.has("golongan")
                           },
                           attrs: { type: "text", name: "golongan" },
                           on: {
@@ -42285,7 +42388,50 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _vm._m(4)
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Tutup")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.editMode,
+                          expression: "editMode"
+                        }
+                      ],
+                      staticClass: "btn btn-warning",
+                      attrs: { type: "submit" }
+                    },
+                    [_vm._v("Perbaharui")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: !_vm.editMode,
+                          expression: "!editMode"
+                        }
+                      ],
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" }
+                    },
+                    [_vm._v("Tambahkan")]
+                  )
+                ])
               ]
             )
           ])
@@ -42295,34 +42441,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Daftar Pelanggan")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success",
-            attrs: {
-              type: "button",
-              "data-toggle": "modal",
-              "data-target": "#TambahBaruModal"
-            }
-          },
-          [
-            _vm._v(
-              "\n                            Tambah Baru\n                            "
-            ),
-            _c("i", { staticClass: "fa fa-user-edit icon-white" })
-          ]
-        )
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -42346,59 +42464,17 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "a",
+      "button",
       {
-        staticClass: "btn bg-warning btn-flat btn-sm",
-        attrs: { href: "#", title: "Ubah" }
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
       },
-      [_c("i", { staticClass: "fa fa-user-edit icon-white" })]
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "tambahBaruModalLabel" } },
-        [_vm._v("Tambah Pelanggan Baru")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Tutup")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_vm._v("Tambahkan")]
-      )
-    ])
   }
 ]
 render._withStripped = true

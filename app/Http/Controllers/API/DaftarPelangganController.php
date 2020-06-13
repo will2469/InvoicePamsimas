@@ -60,7 +60,21 @@ class DaftarPelangganController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pelanggan = DaftarPelanggan::findOrFail($id);
+
+        $this->validate($request,[
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'golongan' => 'required'
+        ]);
+
+        // update pelanggan
+        $pelanggan->nama = $request->nama;
+        $pelanggan->alamat = $request->alamat;
+        $pelanggan->golongan = $request->golongan;
+        $pelanggan->save($request->all());
+
+        return ['message', "User Updated"];
     }
 
     /**

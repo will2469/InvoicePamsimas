@@ -7,8 +7,7 @@
                         <h3 class="card-title">Daftar Pelanggan</h3>
 
                         <div class="card-tools">
-                            <button type="button" class="btn btn-success" data-toggle="modal"
-                                data-target="#TambahBaruModal">
+                            <button type="button" class="btn btn-success" @click="addPelangganModal">
                                 Tambah Baru
                                 <i class="fa fa-user-edit icon-white"></i>
                             </button>
@@ -33,10 +32,12 @@
                                     <td>{{pelanggan.alamat}}</td>
                                     <td>{{pelanggan.golongan}}</td>
                                     <td>
-                                        <a href="#" class="btn bg-warning btn-flat btn-sm" title="Ubah">
+                                        <a href="#" class="btn bg-warning btn-flat btn-sm" title="Ubah"
+                                            @click="editPelangganModal(pelanggan)">
                                             <i class="fa fa-user-edit icon-white"></i>
                                         </a>
-                                        <a href="#" @click="deletePelanggan(pelanggan.id)" class="btn bg-danger btn-flat btn-sm" title="Hapus">
+                                        <a href="#" @click="deletePelanggan(pelanggan.id)"
+                                            class="btn bg-danger btn-flat btn-sm" title="Hapus">
                                             <i class="fa fa-user-times icon-white"></i>
                                         </a>
                                     </td>
@@ -55,12 +56,13 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="tambahBaruModalLabel">Tambah Pelanggan Baru</h5>
+                        <h4 v-show="editMode" class="modal-title">Ubah Pelanggan</h4>
+                        <h4 v-show="!editMode" class="modal-title">Tambah Pelanggan Baru</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="createPelanggan">
+                    <form @submit.prevent="editMode ? updatePelanggan() : createPelanggan()">
                         <div class="modal-body">
                             <div class="form-group">
                                 <input v-model="form.nama" type="text" class="form-control" name="nama"
@@ -78,7 +80,7 @@
 
                             <div class="form-group">
                                 <select v-model="form.golongan" type="text" class="form-control" name="golongan"
-                                    :class="{ 'is-invalid': form.errors.has('alamat') }">
+                                    :class="{ 'is-invalid': form.errors.has('golongan') }">
                                     <option value="">Pilih Golongan Pelanggan</option>
                                     <option value="Rumah Tangga">Rumah Tangga</option>
                                     <option value="Sosial">Sosial</option>
@@ -88,7 +90,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Tambahkan</button>
+                            <button v-show="editMode" type="submit" class="btn btn-warning">Perbaharui</button>
+                            <button v-show="!editMode" type="submit" class="btn btn-primary">Tambahkan</button>
                         </div>
                     </form>
                 </div>
@@ -101,8 +104,10 @@
     export default {
         data() {
             return {
+                editMode: false,
                 daftarPelanggan: {},
                 form: new Form({
+                    id: '',
                     nama: '',
                     alamat: '',
                     golongan: ''
@@ -110,41 +115,71 @@
             }
         },
         methods: {
-        deletePelanggan(id){
-            // untuk menghapus Data Pelanggan
-            Swal.fire({
-                title: 'Apakah Sudah Yakin Bosku?',
-                text: "Data tidak dapat dikembalikan",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus Bosku!'
-            }).then((result) => {
-                //Send the request to the server
-                let url = "api/daftar-pelanggan/" + id;
-                this.form.delete(url).then(()=>{
-            if (result.value) {
-                Swal.fire("Berhasil!", "Data berhasil dihapus Bosku.", "success");
-                }
-                Update.$emit("Updated");
+            addPelangganModal() {
+                this.editMode = false;
+                this.form.reset();
+                $("#TambahBaruModal").modal("show");
+            },
+            editPelangganModal(pelanggan) {
+                this.editMode = true;
+                this.form.reset();
+                $("#TambahBaruModal").modal("show");
+                this.form.fill(pelanggan);
+            },
+            deletePelanggan(id) {
+                // untuk menghapus Data Pelanggan
+                Swal.fire({
+                    title: 'Apakah Sudah Yakin Bosku?',
+                    text: "Data tidak dapat dikembalikan",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus Bosku!'
+                }).then((result) => {
+                    //Send the request to the server
+                    let url = "api/daftar-pelanggan/" + id;
+                    this.form.delete(url).then(() => {
+                            if (result.value) {
+                                Swal.fire("Berhasil!", "Data berhasil dihapus Bosku.", "success");
+                            }
+                            Update.$emit("Updated");
+                        })
+                        .catch(() => {
+                            Swal.fire("Gagal!", "Terjadi Kesalahan Bosku", "warning");
+                        })
                 })
-                .catch(() => {
-            Swal.fire("Gagal!", "Terjadi Kesalahan Bosku", "warning");
-            })
-            })
-        },
-        loadDaftarPelanggan() {
-            // untuk menampilkan Daftar Pelanggan
+            },
+
+            updatePelanggan() {
+                this.$Progress.start();
+                let url = "api/daftar-pelanggan/" + this.form.id;
+                this.form
+                    .put(url)
+                    .then(() => {
+                        //succes
+                        $("#TambahBaruModal").modal("hide");
+                        Swal.fire("Berhasil!", "Data berhasil diubah Bosku.", "success");
+                        this.$Progress.finish();
+                        Update.$emit("Updated");
+                    })
+                    .catch(() => {
+                        //failed
+                        this.$Progress.fail();
+                        Swal.fire("Gagal!", "Data gagal diubah Bosku.", "warning");
+                    });
+            },
+            loadDaftarPelanggan() {
+                // untuk menampilkan Daftar Pelanggan
                 axios.get("api/daftar-pelanggan").then(({
                     data
                 }) => (this.daftarPelanggan = data.data));
             },
 
-        createPelanggan() {
-            // untuk menambahkan pelanggan baru
+            createPelanggan() {
+                // untuk menambahkan pelanggan baru
                 this.$Progress.start();
-                
+
                 let url = "api/daftar-pelanggan";
                 this.form
                     .post(url)
@@ -153,20 +188,20 @@
                         this.$Toast.fire({
                             icon: "success",
                             title: "Pengguna baru telah dibuat bosku..."
-                            });
+                        });
 
-                            this.$Progress.finish();
+                        this.$Progress.finish();
 
-                            Update.$emit("Updated");
+                        Update.$emit("Updated");
                     })
 
-                .catch(() => {
-                    this.$Progress.fail();
-                    this.$Toast.fire({
-                        icon: "warning",
-                        title: "Terdapat kesalahan saat menyimpan data bosku..."
+                    .catch(() => {
+                        this.$Progress.fail();
+                        this.$Toast.fire({
+                            icon: "warning",
+                            title: "Terdapat kesalahan saat menyimpan data bosku..."
                         });
-                });
+                    });
             }
         },
         created() {
