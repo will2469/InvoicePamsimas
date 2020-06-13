@@ -71,6 +71,12 @@ class DaftarPelangganController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pelanggan = DaftarPelanggan::findOrFail($id);
+
+        // Menghapus data pelanggan
+        $pelanggan->delete();
+
+        //Mengalihkan halaman setelah hapus
+        return['message', 'Pelanggan Telah terhapus bosku!'];
     }
 }

@@ -36,7 +36,7 @@
                                         <a href="#" class="btn bg-warning btn-flat btn-sm" title="Ubah">
                                             <i class="fa fa-user-edit icon-white"></i>
                                         </a>
-                                        <a href="#" class="btn bg-danger btn-flat btn-sm" title="Hapus">
+                                        <a href="#" @click="deletePelanggan(pelanggan.id)" class="btn bg-danger btn-flat btn-sm" title="Hapus">
                                             <i class="fa fa-user-times icon-white"></i>
                                         </a>
                                     </td>
@@ -110,8 +110,32 @@
             }
         },
         methods: {
+        deletePelanggan(id){
+            // untuk menghapus Data Pelanggan
+            Swal.fire({
+                title: 'Apakah Sudah Yakin Bosku?',
+                text: "Data tidak dapat dikembalikan",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus Bosku!'
+            }).then((result) => {
+                //Send the request to the server
+                let url = "api/daftar-pelanggan/" + id;
+                this.form.delete(url).then(()=>{
+            if (result.value) {
+                Swal.fire("Berhasil!", "Data berhasil dihapus Bosku.", "success");
+                }
+                Update.$emit("Updated");
+                })
+                .catch(() => {
+            Swal.fire("Gagal!", "Terjadi Kesalahan Bosku", "warning");
+            })
+            })
+        },
+        loadDaftarPelanggan() {
             // untuk menampilkan Daftar Pelanggan
-            loadDaftarPelanggan() {
                 axios.get("api/daftar-pelanggan").then(({
                     data
                 }) => (this.daftarPelanggan = data.data));

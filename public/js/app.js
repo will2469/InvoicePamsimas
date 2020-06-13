@@ -2062,17 +2062,44 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    // untuk menampilkan Daftar Pelanggan
-    loadDaftarPelanggan: function loadDaftarPelanggan() {
+    deletePelanggan: function deletePelanggan(id) {
       var _this = this;
 
+      // untuk menghapus Data Pelanggan
+      Swal.fire({
+        title: 'Apakah Sudah Yakin Bosku?',
+        text: "Data tidak dapat dikembalikan",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus Bosku!'
+      }).then(function (result) {
+        //Send the request to the server
+        var url = "api/daftar-pelanggan/" + id;
+
+        _this.form["delete"](url).then(function () {
+          if (result.value) {
+            Swal.fire("Berhasil!", "Data berhasil dihapus Bosku.", "success");
+          }
+
+          Update.$emit("Updated");
+        })["catch"](function () {
+          Swal.fire("Gagal!", "Terjadi Kesalahan Bosku", "warning");
+        });
+      });
+    },
+    loadDaftarPelanggan: function loadDaftarPelanggan() {
+      var _this2 = this;
+
+      // untuk menampilkan Daftar Pelanggan
       axios.get("api/daftar-pelanggan").then(function (_ref) {
         var data = _ref.data;
-        return _this.daftarPelanggan = data.data;
+        return _this2.daftarPelanggan = data.data;
       });
     },
     createPelanggan: function createPelanggan() {
-      var _this2 = this;
+      var _this3 = this;
 
       // untuk menambahkan pelanggan baru
       this.$Progress.start();
@@ -2080,18 +2107,18 @@ __webpack_require__.r(__webpack_exports__);
       this.form.post(url).then(function () {
         $("#TambahBaruModal").modal("hide");
 
-        _this2.$Toast.fire({
+        _this3.$Toast.fire({
           icon: "success",
           title: "Pengguna baru telah dibuat bosku..."
         });
 
-        _this2.$Progress.finish();
+        _this3.$Progress.finish();
 
         Update.$emit("Updated");
       })["catch"](function () {
-        _this2.$Progress.fail();
+        _this3.$Progress.fail();
 
-        _this2.$Toast.fire({
+        _this3.$Toast.fire({
           icon: "warning",
           title: "Terdapat kesalahan saat menyimpan data bosku..."
         });
@@ -2099,11 +2126,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.loadDaftarPelanggan();
     Update.$on("Updated", function () {
-      _this3.loadDaftarPelanggan();
+      _this4.loadDaftarPelanggan();
     });
   }
 });
@@ -42058,7 +42085,27 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(pelanggan.golongan))]),
                     _vm._v(" "),
-                    _vm._m(2, true)
+                    _c("td", [
+                      _vm._m(2, true),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn bg-danger btn-flat btn-sm",
+                          attrs: { href: "#", title: "Hapus" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deletePelanggan(pelanggan.id)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-user-times icon-white"
+                          })
+                        ]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -42298,25 +42345,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "a",
-        {
-          staticClass: "btn bg-warning btn-flat btn-sm",
-          attrs: { href: "#", title: "Ubah" }
-        },
-        [_c("i", { staticClass: "fa fa-user-edit icon-white" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn bg-danger btn-flat btn-sm",
-          attrs: { href: "#", title: "Hapus" }
-        },
-        [_c("i", { staticClass: "fa fa-user-times icon-white" })]
-      )
-    ])
+    return _c(
+      "a",
+      {
+        staticClass: "btn bg-warning btn-flat btn-sm",
+        attrs: { href: "#", title: "Ubah" }
+      },
+      [_c("i", { staticClass: "fa fa-user-edit icon-white" })]
+    )
   },
   function() {
     var _vm = this
