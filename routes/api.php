@@ -21,3 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResources([
     'daftar-pelanggan' => 'API\DaftarPelangganController'
 ]);
+Route::apiResources(['golongan' => 'API\GolonganController']);
+Route::apiResources(['status' => 'API\StatusController']);

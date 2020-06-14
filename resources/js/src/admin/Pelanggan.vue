@@ -20,8 +20,10 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
+                                    <th>ID Pelanggan</th>
                                     <th>Alamat</th>
                                     <th>Golongan</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -29,8 +31,13 @@
                                 <tr v-for="pelanggan in daftarPelanggan.data" :key="pelanggan.id">
                                     <td>{{pelanggan.id}}</td>
                                     <td>{{pelanggan.nama}}</td>
+                                    <td>{{pelanggan.id_pel}}</td>
                                     <td>{{pelanggan.alamat}}</td>
-                                    <td>{{pelanggan.golongan}}</td>
+                                    <td>{{pelanggan.golongan[0].golongan}}</td>
+                                    <td>
+                                        <span v-if="pelanggan.status[0].status==='Aktif'"
+                                            class="badge bg-success">Aktif</span>
+                                        <span v-else class="badge bg-danger">Non Aktif</span>
                                     <td>
                                         <a href="#" class="btn bg-warning btn-flat btn-sm" title="Ubah"
                                             @click="editPelangganModal(pelanggan)">
@@ -85,13 +92,24 @@
                             </div>
 
                             <div class="form-group">
-                                <select v-model="form.golongan" type="text" class="form-control" name="golongan"
+                                <select v-model="form.golonganId" type="text" class="form-control" name="golonganId"
                                     :class="{ 'is-invalid': form.errors.has('golongan') }">
-                                    <option value="">Pilih Golongan Pelanggan</option>
-                                    <option value="Rumah Tangga">Rumah Tangga</option>
-                                    <option value="Sosial">Sosial</option>
+                                    <option disabled value="">Pilih Golongan Pelanggan</option>
+                                    <option v-for="golongan in jenis_golongan" :key="golongan.id"
+                                        v-bind:value="golongan.id">
+                                        {{ golongan.golongan }}</option>
                                 </select>
                                 <has-error :form="form" field="golongan"></has-error>
+                            </div>
+
+                            <div class="form-group">
+                                <select v-model="form.statusId" type="text" class="form-control" name="statusId"
+                                    :class="{ 'is-invalid': form.errors.has('status') }">
+                                    <option disabled value="">Pilih Status Pelanggan</option>
+                                    <option v-for="status in jenis_status" :key="status.id" v-bind:value="status.id">
+                                        {{ status.status }}</option>
+                                </select>
+                                <has-error :form="form" field="status"></has-error>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -111,12 +129,16 @@
         data() {
             return {
                 editMode: false,
+                jenis_golongan: [],
+                jenis_status: {},
                 daftarPelanggan: {},
                 form: new Form({
                     id: '',
                     nama: '',
+                    id_pel: '',
                     alamat: '',
-                    golongan: ''
+                    golonganId: '',
+                    statusId: ''
                 })
             }
         },
@@ -128,6 +150,7 @@
                         this.daftarPelanggan = response.data;
                     });
             },
+
             addPelangganModal() {
                 this.editMode = false;
                 this.form.reset();
@@ -136,8 +159,11 @@
             editPelangganModal(pelanggan) {
                 this.editMode = true;
                 this.form.reset();
+                this.form.clear();
                 $("#TambahBaruModal").modal("show");
                 this.form.fill(pelanggan);
+                this.form.golonganId = pelanggan.golongan[0].id;
+                this.form.statusId = pelanggan.status[0].id;
             },
             deletePelanggan(id) {
                 // untuk menghapus Data Pelanggan
@@ -189,6 +215,23 @@
                 }) => (this.daftarPelanggan = data));
             },
 
+            loadGolongan: function () {
+                let url = "api/golongan";
+                axios.get(url).then(({
+                    data
+                }) => (this.jenis_golongan = data));
+            },
+            loadStatus: function () {
+                let url = "api/status";
+                axios.get(url).then(({
+                    data
+                }) => {
+                    //console.log(response)
+                    // set your form data not sure of the correct form from above but same idea
+                    this.jenis_status = data; // however the response is formatted from Laravel may differ
+                });
+            },
+
             createPelanggan() {
                 // untuk menambahkan pelanggan baru
                 this.$Progress.start();
@@ -219,6 +262,8 @@
         },
         created() {
             this.loadDaftarPelanggan();
+            this.loadGolongan();
+            this.loadStatus();
 
             Update.$on("Updated", () => {
                 this.loadDaftarPelanggan();

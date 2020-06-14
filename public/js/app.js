@@ -2059,16 +2059,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editMode: false,
+      jenis_golongan: [],
+      jenis_status: {},
       daftarPelanggan: {},
       form: new Form({
         id: '',
         nama: '',
+        id_pel: '',
         alamat: '',
-        golongan: ''
+        golonganId: '',
+        statusId: ''
       })
     };
   },
@@ -2090,8 +2112,11 @@ __webpack_require__.r(__webpack_exports__);
     editPelangganModal: function editPelangganModal(pelanggan) {
       this.editMode = true;
       this.form.reset();
+      this.form.clear();
       $("#TambahBaruModal").modal("show");
       this.form.fill(pelanggan);
+      this.form.golonganId = pelanggan.golongan[0].id;
+      this.form.statusId = pelanggan.status[0].id;
     },
     deletePelanggan: function deletePelanggan(id) {
       var _this2 = this;
@@ -2149,8 +2174,28 @@ __webpack_require__.r(__webpack_exports__);
         return _this4.daftarPelanggan = data;
       });
     },
-    createPelanggan: function createPelanggan() {
+    loadGolongan: function loadGolongan() {
       var _this5 = this;
+
+      var url = "api/golongan";
+      axios.get(url).then(function (_ref2) {
+        var data = _ref2.data;
+        return _this5.jenis_golongan = data;
+      });
+    },
+    loadStatus: function loadStatus() {
+      var _this6 = this;
+
+      var url = "api/status";
+      axios.get(url).then(function (_ref3) {
+        var data = _ref3.data;
+        //console.log(response)
+        // set your form data not sure of the correct form from above but same idea
+        _this6.jenis_status = data; // however the response is formatted from Laravel may differ
+      });
+    },
+    createPelanggan: function createPelanggan() {
+      var _this7 = this;
 
       // untuk menambahkan pelanggan baru
       this.$Progress.start();
@@ -2158,18 +2203,18 @@ __webpack_require__.r(__webpack_exports__);
       this.form.post(url).then(function () {
         $("#TambahBaruModal").modal("hide");
 
-        _this5.$Toast.fire({
+        _this7.$Toast.fire({
           icon: "success",
           title: "Pengguna baru telah dibuat bosku..."
         });
 
-        _this5.$Progress.finish();
+        _this7.$Progress.finish();
 
         Update.$emit("Updated");
       })["catch"](function () {
-        _this5.$Progress.fail();
+        _this7.$Progress.fail();
 
-        _this5.$Toast.fire({
+        _this7.$Toast.fire({
           icon: "warning",
           title: "Terdapat kesalahan saat menyimpan data bosku..."
         });
@@ -2177,11 +2222,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this6 = this;
+    var _this8 = this;
 
     this.loadDaftarPelanggan();
+    this.loadGolongan();
+    this.loadStatus();
     Update.$on("Updated", function () {
-      _this6.loadDaftarPelanggan();
+      _this8.loadDaftarPelanggan();
     });
   }
 });
@@ -42746,10 +42793,21 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(pelanggan.nama))]),
                     _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(pelanggan.id_pel))]),
+                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(pelanggan.alamat))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(pelanggan.golongan))]),
+                    _c("td", [_vm._v(_vm._s(pelanggan.golongan[0].golongan))]),
                     _vm._v(" "),
+                    _c("td", [
+                      pelanggan.status[0].status === "Aktif"
+                        ? _c("span", { staticClass: "badge bg-success" }, [
+                            _vm._v("Aktif")
+                          ])
+                        : _c("span", { staticClass: "badge bg-danger" }, [
+                            _vm._v("Non Aktif")
+                          ])
+                    ]),
                     _c("td", [
                       _c(
                         "a",
@@ -42972,15 +43030,15 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.golongan,
-                              expression: "form.golongan"
+                              value: _vm.form.golonganId,
+                              expression: "form.golonganId"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
                             "is-invalid": _vm.form.errors.has("golongan")
                           },
-                          attrs: { type: "text", name: "golongan" },
+                          attrs: { type: "text", name: "golonganId" },
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -42993,7 +43051,7 @@ var render = function() {
                                 })
                               _vm.$set(
                                 _vm.form,
-                                "golongan",
+                                "golonganId",
                                 $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
@@ -43002,22 +43060,102 @@ var render = function() {
                           }
                         },
                         [
-                          _c("option", { attrs: { value: "" } }, [
+                          _c("option", { attrs: { disabled: "", value: "" } }, [
                             _vm._v("Pilih Golongan Pelanggan")
                           ]),
                           _vm._v(" "),
-                          _c("option", { attrs: { value: "Rumah Tangga" } }, [
-                            _vm._v("Rumah Tangga")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Sosial" } }, [
-                            _vm._v("Sosial")
-                          ])
-                        ]
+                          _vm._l(_vm.jenis_golongan, function(golongan) {
+                            return _c(
+                              "option",
+                              {
+                                key: golongan.id,
+                                domProps: { value: golongan.id }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(golongan.golongan)
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
                       ),
                       _vm._v(" "),
                       _c("has-error", {
                         attrs: { form: _vm.form, field: "golongan" }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group" },
+                    [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.statusId,
+                              expression: "form.statusId"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("status")
+                          },
+                          attrs: { type: "text", name: "statusId" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "statusId",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { disabled: "", value: "" } }, [
+                            _vm._v("Pilih Status Pelanggan")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.jenis_status, function(status) {
+                            return _c(
+                              "option",
+                              {
+                                key: status.id,
+                                domProps: { value: status.id }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(status.status)
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "status" }
                       })
                     ],
                     1
@@ -43087,9 +43225,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Nama")]),
         _vm._v(" "),
+        _c("th", [_vm._v("ID Pelanggan")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Alamat")]),
         _vm._v(" "),
         _c("th", [_vm._v("Golongan")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
         _vm._v(" "),
         _c("th", [_vm._v("Aksi")])
       ])

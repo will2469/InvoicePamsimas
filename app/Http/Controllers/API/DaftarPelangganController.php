@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DaftarPelanggan;
+use App\Golongan;
+use App\Status;
 
 class DaftarPelangganController extends Controller
 {
@@ -24,7 +26,8 @@ class DaftarPelangganController extends Controller
      */
     public function index()
     {
-        return DaftarPelanggan::latest()->paginate(5);
+        $pelanggan = DaftarPelanggan::orderBy('created_at', 'desc')->with(['golongan','status'])->paginate(5);
+        return $pelanggan;
     }
 
     /**
@@ -38,15 +41,24 @@ class DaftarPelangganController extends Controller
 
         $this->validate($request,[
             'nama' => 'required|string|max:255',
+            //'id_pel' => 'required|string|size:12|unique:daftarPelanggan',
             'alamat' => 'required|string|max:255',
-            'golongan' => 'required'
+            'golonganId' => 'required',
+            'statusId' => 'required'
         ]);
 
-        return DaftarPelanggan::create([
+        $golongan = Golongan::where('id', $request['golonganId'])->first();
+        $status = Status::where('id', $request['statusId'])->first();
+        
+        $pelanggan = DaftarPelanggan::create([
             'nama' => $request['nama'],
+            //'id_pel' => $id_pel,
             'alamat' => $request['alamat'],
-            'golongan' => $request['golongan'],
         ]);
+
+        $pelanggan->golongan()->attach($golongan);
+        $pelanggan->status()->attach($status);
+
     }
 
     /**
@@ -70,17 +82,19 @@ class DaftarPelangganController extends Controller
     public function update(Request $request, $id)
     {
         $pelanggan = DaftarPelanggan::findOrFail($id);
+        $pelanggan->golongan()->sync($request->golonganId);
+        $pelanggan->status()->sync($request->statusId);
 
         $this->validate($request,[
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
-            'golongan' => 'required'
+            'golonganId' => 'sometimes',
+            'statusId' => 'sometimes'
         ]);
 
         // update pelanggan
         $pelanggan->nama = $request->nama;
         $pelanggan->alamat = $request->alamat;
-        $pelanggan->golongan = $request->golongan;
         $pelanggan->save($request->all());
 
         return ['message', "User Updated"];
@@ -95,6 +109,8 @@ class DaftarPelangganController extends Controller
     public function destroy($id)
     {
         $pelanggan = DaftarPelanggan::findOrFail($id);
+        $pelanggan->golongan()->sync([]);
+        $pelanggan->status()->sync([]);
 
         // Menghapus data pelanggan
         $pelanggan->delete();
