@@ -103,7 +103,7 @@
                             </div>
 
                             <div class="form-group">
-                                <select v-model="form.statusId" type="text" class="form-control" name="statusId"
+                                <select v-model="form.statusId" v-show="editMode" type="text" class="form-control" name="statusId"
                                     :class="{ 'is-invalid': form.errors.has('status') }">
                                     <option disabled value="">Pilih Status Pelanggan</option>
                                     <option v-for="status in jenis_status" :key="status.id" v-bind:value="status.id">
@@ -155,6 +155,7 @@
                 this.editMode = false;
                 this.form.reset();
                 $("#TambahBaruModal").modal("show");
+                this.form.statusId = "1";
             },
             editPelangganModal(pelanggan) {
                 this.editMode = true;

@@ -2108,6 +2108,7 @@ __webpack_require__.r(__webpack_exports__);
       this.editMode = false;
       this.form.reset();
       $("#TambahBaruModal").modal("show");
+      this.form.statusId = "1";
     },
     editPelangganModal: function editPelangganModal(pelanggan) {
       this.editMode = true;
@@ -43103,6 +43104,12 @@ var render = function() {
                               rawName: "v-model",
                               value: _vm.form.statusId,
                               expression: "form.statusId"
+                            },
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.editMode,
+                              expression: "editMode"
                             }
                           ],
                           staticClass: "form-control",
