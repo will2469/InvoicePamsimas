@@ -26,7 +26,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="pelanggan in daftarPelanggan" :key="pelanggan.id">
+                                <tr v-for="pelanggan in daftarPelanggan.data" :key="pelanggan.id">
                                     <td>{{pelanggan.id}}</td>
                                     <td>{{pelanggan.nama}}</td>
                                     <td>{{pelanggan.alamat}}</td>
@@ -46,6 +46,12 @@
                         </table>
                     </div>
                     <!-- /.card-body -->
+                    <div class="card-footer">
+                        <pagination :data="daftarPelanggan" @pagination-change-page="getResults">
+                            <span slot="prev-nav">&lt; Sebelumnya</span>
+                            <span slot="next-nav">Selanjutnya &gt;</span>
+                        </pagination>
+                    </div>
                 </div>
                 <!-- /.card -->
             </div>
@@ -115,6 +121,13 @@
             }
         },
         methods: {
+            // Menggunakan metode untuk pagination
+            getResults(page = 1) {
+                axios.get('api/daftar-pelanggan?page=' + page)
+                    .then(response => {
+                        this.daftarPelanggan = response.data;
+                    });
+            },
             addPelangganModal() {
                 this.editMode = false;
                 this.form.reset();
@@ -173,7 +186,7 @@
                 // untuk menampilkan Daftar Pelanggan
                 axios.get("api/daftar-pelanggan").then(({
                     data
-                }) => (this.daftarPelanggan = data.data));
+                }) => (this.daftarPelanggan = data));
             },
 
             createPelanggan() {
