@@ -10,7 +10,7 @@ class DaftarPelanggan extends Model
     protected $table = 'daftarPelanggan' ;  
 
     protected $fillable = [
-       'nama', 'alamat', 'golongan',
+        'nama', 'alamat', 'golongan',
     ];
 
     protected $hidden = [
