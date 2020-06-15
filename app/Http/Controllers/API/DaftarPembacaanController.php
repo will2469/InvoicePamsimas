@@ -16,7 +16,12 @@ class DaftarPembacaanController extends Controller
 
     public function index()
     {
-        $pembacaan = DaftarPelanggan::orderBy('created_at', 'asc')->with(['pelanggan'])->paginate(5);
+        $pembacaan = DaftarPembacaan::orderBy('created_at', 'asc')->with(['pelanggan'])->paginate(5);
         return $pembacaan;
+    }
+
+    public function update(Request $request, $id)
+    {
+        //
     }
 }

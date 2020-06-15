@@ -26,11 +26,11 @@
                                 </tr>
                             </thead>
                             <tr  v-for="pembacaan in daftar_pembacaan.data" :key="pembacaan.id">
-                                <td>{{pembacaan.pelanggan[0].id}}</td>
-                                <td>{{pembacaan.nama}}</td>
-                                <td>{{pembacaan.id_pel}}</td>
-                                <td>{{pembacaan.pelanggan[0].created_at}}</td>
-                                <td>{{pembacaan.pelanggan[0].pembacaan}}</td>
+                                <td>{{pembacaan.id}}</td>
+                                <td>{{pembacaan.pelanggan[0].nama}}</td>
+                                <td>{{pembacaan.pelanggan[0].id_pel}}</td>
+                                <td>{{pembacaan.created_at}}</td>
+                                <td>{{pembacaan.pembacaan}}</td>
                                 <td>
                                     <a href="#" @click="editPembacaanMeteranModal" class="btn bg-warning btn-flat btn-sm" title="Ubah">
                                         <i class="fa fa-user-edit icon-white"></i>
@@ -97,11 +97,9 @@
                 editMode: false,
                 daftar_pembacaan: {},
                 form: new Form({
-                    id: '',
-                    nama: '',
-                    id_pel: '',
-                    created_at: '',
-                    pembacaan: ''
+                    nama:'',
+                    id_pel:'',
+                    pembacaan: '',
                 })
                 }
         },
@@ -117,10 +115,9 @@
                 this.form.reset();
                 $("#PembacaanMeteranModal").modal("show");
             },
-            editPembacaanMeteranModal(pelanggan) {
+            editPembacaanMeteranModal(pembacaan) {
                 this.editMode = true;
                 this.form.reset();
-                this.form.clear();
                 $("#PembacaanMeteranModal").modal("show");
             },
             loadDaftarPembacaan() {

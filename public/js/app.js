@@ -2343,10 +2343,8 @@ __webpack_require__.r(__webpack_exports__);
       editMode: false,
       daftar_pembacaan: {},
       form: new Form({
-        id: '',
         nama: '',
         id_pel: '',
-        created_at: '',
         pembacaan: ''
       })
     };
@@ -2363,10 +2361,9 @@ __webpack_require__.r(__webpack_exports__);
       this.form.reset();
       $("#PembacaanMeteranModal").modal("show");
     },
-    editPembacaanMeteranModal: function editPembacaanMeteranModal(pelanggan) {
+    editPembacaanMeteranModal: function editPembacaanMeteranModal(pembacaan) {
       this.editMode = true;
       this.form.reset();
-      this.form.clear();
       $("#PembacaanMeteranModal").modal("show");
     },
     loadDaftarPembacaan: function loadDaftarPembacaan() {
@@ -43436,19 +43433,15 @@ var render = function() {
                 _vm._v(" "),
                 _vm._l(_vm.daftar_pembacaan.data, function(pembacaan) {
                   return _c("tr", { key: pembacaan.id }, [
-                    _c("td", [_vm._v(_vm._s(pembacaan.pelanggan[0].id))]),
+                    _c("td", [_vm._v(_vm._s(pembacaan.id))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(pembacaan.nama))]),
+                    _c("td", [_vm._v(_vm._s(pembacaan.pelanggan[0].nama))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(pembacaan.id_pel))]),
+                    _c("td", [_vm._v(_vm._s(pembacaan.pelanggan[0].id_pel))]),
                     _vm._v(" "),
-                    _c("td", [
-                      _vm._v(_vm._s(pembacaan.pelanggan[0].created_at))
-                    ]),
+                    _c("td", [_vm._v(_vm._s(pembacaan.created_at))]),
                     _vm._v(" "),
-                    _c("td", [
-                      _vm._v(_vm._s(pembacaan.pelanggan[0].pembacaan))
-                    ]),
+                    _c("td", [_vm._v(_vm._s(pembacaan.pembacaan))]),
                     _vm._v(" "),
                     _c("td", [
                       _c(
