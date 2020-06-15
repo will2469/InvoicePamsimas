@@ -23,3 +23,4 @@ Route::apiResources([
 ]);
 Route::apiResources(['golongan' => 'API\GolonganController']);
 Route::apiResources(['status' => 'API\StatusController']);
+Route::apiResources(['daftar-pembacaan' => 'API\DaftarPembacaanController']);

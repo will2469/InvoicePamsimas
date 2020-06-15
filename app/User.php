@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -37,4 +38,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    public function getCreatedAtAttribute($date)
+{
+    return Carbon::parse($date)->format('d-M-Y H:i:s');
+}
+
+    public function getUpdatedAtAttribute(){
+        return \Carbon\Carbon::parse($this->attributes['updated_at'])
+        ->diffForHumans();
+    }
 }

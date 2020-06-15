@@ -2261,9 +2261,126 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  data: function data() {
+    return {
+      editMode: false,
+      daftar_pembacaan: {},
+      form: new Form({
+        id: '',
+        nama: '',
+        id_pel: '',
+        created_at: '',
+        pembacaan: ''
+      })
+    };
+  },
+  methods: {
+    updatePembacaan: function updatePembacaan() {
+      console.log('Ini Modal Edit');
+    },
+    createPembacaan: function createPembacaan() {
+      console.log('Ini Modal Tambah');
+    },
+    addPembacaanMeteranModal: function addPembacaanMeteranModal() {
+      this.editMode = false;
+      this.form.reset();
+      $("#PembacaanMeteranModal").modal("show");
+    },
+    editPembacaanMeteranModal: function editPembacaanMeteranModal(pelanggan) {
+      this.editMode = true;
+      this.form.reset();
+      this.form.clear();
+      $("#PembacaanMeteranModal").modal("show");
+    },
+    loadDaftarPembacaan: function loadDaftarPembacaan() {
+      var _this = this;
+
+      // untuk menampilkan Daftar Pelanggan
+      axios.get("api/daftar-pembacaan").then(function (_ref) {
+        var data = _ref.data;
+        return _this.daftar_pembacaan = data;
+      });
+    }
+  },
+  created: function created() {
+    this.loadDaftarPembacaan();
   }
 });
 
@@ -42756,7 +42873,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "row", attrs: { "justify-content-center": "" } }, [
       _c("div", { staticClass: "col-12" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
@@ -42790,7 +42907,7 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.daftarPelanggan.data, function(pelanggan) {
                   return _c("tr", { key: pelanggan.id }, [
-                    _c("td", [_vm._v(_vm._s(pelanggan.id))]),
+                    _c("td", [_vm._v(_vm._s(_vm.pembacaan.id))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(pelanggan.nama))]),
                     _vm._v(" "),
@@ -43283,30 +43400,355 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-12" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _c("h3", { staticClass: "card-title" }, [
+              _vm._v("Pembacaan Meteran")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-tools" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "button" },
+                  on: { click: _vm.addPembacaanMeteranModal }
+                },
+                [
+                  _vm._v(
+                    "\n                            Tambah Baru\n                            "
+                  ),
+                  _c("i", { staticClass: "fas fa-edit icon-white" })
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c(
+              "table",
+              { staticClass: "table table-hover text-nowrap" },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _vm._l(_vm.daftar_pembacaan.data, function(pembacaan) {
+                  return _c("tr", { key: pembacaan.id }, [
+                    _c("td", [_vm._v(_vm._s(pembacaan.pelanggan[0].id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(pembacaan.nama))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(pembacaan.id_pel))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(pembacaan.pelanggan[0].created_at))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(pembacaan.pelanggan[0].pembacaan))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn bg-warning btn-flat btn-sm",
+                          attrs: { href: "#", title: "Ubah" },
+                          on: { click: _vm.editPembacaanMeteranModal }
+                        },
+                        [_c("i", { staticClass: "fa fa-user-edit icon-white" })]
+                      )
+                    ])
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          staticStyle: { display: "none" },
+          attrs: {
+            id: "PembacaanMeteranModal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "PembacaanMeteranModal",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog modal-dialog-centered" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h4",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.editMode,
+                        expression: "editMode"
+                      }
+                    ],
+                    staticClass: "modal-title"
+                  },
+                  [_vm._v("Ubah Pembacaan")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h4",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.editMode,
+                        expression: "!editMode"
+                      }
+                    ],
+                    staticClass: "modal-title"
+                  },
+                  [_vm._v("Tambah Pembacaan")]
+                ),
+                _vm._v(" "),
+                _vm._m(1)
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editMode
+                        ? _vm.updatePembacaan()
+                        : _vm.createPembacaan()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.nama,
+                              expression: "form.nama"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "is-invalid": _vm.form.errors.has("nama") },
+                          attrs: {
+                            type: "text",
+                            name: "nama",
+                            placeholder: "Nama Pelanggan..."
+                          },
+                          domProps: { value: _vm.form.nama },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "nama", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "nama" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.id_pel,
+                              expression: "form.id_pel"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("id_pel")
+                          },
+                          attrs: {
+                            type: "text",
+                            name: "id_pel",
+                            placeholder: "ID Pelanggan..."
+                          },
+                          domProps: { value: _vm.form.id_pel },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "id_pel", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "id_pel" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.pembacaan,
+                              expression: "form.pembacaan"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("pembacaan")
+                          },
+                          attrs: {
+                            type: "text",
+                            name: "pembacaan",
+                            placeholder: "Masukkan Pembacaan Meteran..."
+                          },
+                          domProps: { value: _vm.form.pembacaan },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "pembacaan",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "pembacaan" }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("Tutup")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.editMode,
+                            expression: "editMode"
+                          }
+                        ],
+                        staticClass: "btn btn-warning",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Perbaharui")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.editMode,
+                            expression: "!editMode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Tambahkan")]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ])
+        ]
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Pembacaan Meteran Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an pembacaan meteran component.\n                "
-              )
-            ])
-          ])
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("No")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nama")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("ID Pelanggan")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Waktu Pembacaan")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Pembacaan Meteran")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Aksi")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true

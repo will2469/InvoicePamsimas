@@ -24,4 +24,8 @@ class DaftarPelanggan extends Model
     public function status(){
         return $this->belongsToMany('App\Status');
     }
+
+    public function pelanggan(){
+        return $this->belongsToMany('App\DaftarPembacaan',);
+    }
 }

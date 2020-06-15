@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div class="row" justify-content-center>
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
@@ -29,7 +29,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="pelanggan in daftarPelanggan.data" :key="pelanggan.id">
-                                    <td>{{pelanggan.id}}</td>
+                                    <td>{{pembacaan.id}}</td>
                                     <td>{{pelanggan.nama}}</td>
                                     <td>{{pelanggan.id_pel}}</td>
                                     <td>{{pelanggan.alamat}}</td>

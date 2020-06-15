@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         GolonganSeeder::class,
         StatusSeeder::class,
         PelangganSeeder::class,
+        PembacaanSeeder::class,
     ]);
     }
 }
