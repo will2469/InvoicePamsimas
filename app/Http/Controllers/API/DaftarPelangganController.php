@@ -26,7 +26,7 @@ class DaftarPelangganController extends Controller
      */
     public function index()
     {
-        $pelanggan = DaftarPelanggan::orderBy('created_at', 'desc')->with(['golongan','status'])->paginate(5);
+        $pelanggan = DaftarPelanggan::orderBy('created_at', 'asc')->with(['golongan','status'])->paginate(5);
         return $pelanggan;
     }
 
@@ -41,7 +41,6 @@ class DaftarPelangganController extends Controller
 
         $this->validate($request,[
             'nama' => 'required|string|max:255',
-            //'id_pel' => 'required|string|size:12|unique:daftarPelanggan',
             'alamat' => 'required|string|max:255',
             'golonganId' => 'required',
             'statusId' => 'required'
@@ -49,15 +48,33 @@ class DaftarPelangganController extends Controller
 
         $golongan = Golongan::where('id', $request['golonganId'])->first();
         $status = Status::where('id', $request['statusId'])->first();
-        
-        $pelanggan = DaftarPelanggan::create([
-            'nama' => $request['nama'],
-            //'id_pel' => $id_pel,
-            'alamat' => $request['alamat'],
-        ]);
 
+        $n_pelanggan = DaftarPelanggan::max('id');
+        $id_pel_ = $n_pelanggan+1;
+
+        if ($id_pel_ < 10){
+            $id_pel ="3310192010".''. "0".''.$request['golonganId'].''.date('Y').'' ."000". $id_pel_; 
+        }
+        elseif ($id_pel_ >= 10 && $id_pel_ <= 99){
+            $id_pel = "3310192010".''. "0".''.$request['golonganId'].''.date('Y').'' ."00". $id_pel_; 
+        }
+        elseif ($id_pel_ >= 100 && $id_pel_ <= 999){
+            $id_pel = "3310192010".''. "0".''.$request['golonganId'].''.date('Y').'' ."0". $id_pel_; 
+        }
+        elseif ($id_pel_ > 999){
+            $id_pel = "3310192010".''. "0".''.$request['golonganId'].''.date('Y').''. $id_pel_; 
+        }
+        
+        $pelanggan = new DaftarPelanggan;
+        $pelanggan->nama = $request->nama;
+        $pelanggan->id_pel = $id_pel;
+        $pelanggan->alamat = $request->alamat;
+        $pelanggan->save() ;
+        
         $pelanggan->golongan()->attach($golongan);
         $pelanggan->status()->attach($status);
+
+        return ['message', $id_pel];
 
     }
 
@@ -92,9 +109,15 @@ class DaftarPelangganController extends Controller
             'statusId' => 'sometimes'
         ]);
 
+        $id_pel_ = $pelanggan->id_pel;
+        $num_pel = substr($id_pel_,-4);
+        $id_pel_new ="3310192010".''. "0".''.$request['golonganId'].''.date('Y').''.$num_pel;
+
+
         // update pelanggan
         $pelanggan->nama = $request->nama;
         $pelanggan->alamat = $request->alamat;
+        $pelanggan->id_pel = $id_pel_new;
         $pelanggan->save($request->all());
 
         return ['message', "User Updated"];

@@ -16,7 +16,7 @@ class CreateDaftarPelangganTable extends Migration
         Schema::create('daftarPelanggan', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nama');
-            $table->string('id_pel')->nullable();
+            $table->string('id_pel')->unique();
             $table->string('alamat');
             $table->timestamps();
         });
