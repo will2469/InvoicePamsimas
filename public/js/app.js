@@ -42904,7 +42904,7 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.daftarPelanggan.data, function(pelanggan) {
                   return _c("tr", { key: pelanggan.id }, [
-                    _c("td", [_vm._v(_vm._s(_vm.pembacaan.id))]),
+                    _c("td", [_vm._v(_vm._s(pelanggan.id))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(pelanggan.nama))]),
                     _vm._v(" "),

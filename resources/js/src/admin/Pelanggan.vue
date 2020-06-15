@@ -29,7 +29,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="pelanggan in daftarPelanggan.data" :key="pelanggan.id">
-                                    <td>{{pembacaan.id}}</td>
+                                    <td>{{pelanggan.id}}</td>
                                     <td>{{pelanggan.nama}}</td>
                                     <td>{{pelanggan.id_pel}}</td>
                                     <td>{{pelanggan.alamat}}</td>
